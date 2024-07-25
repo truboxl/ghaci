@@ -20,6 +20,5 @@ jobs:
     - name: Run BOINC
       run: |
         uptime
-        > /tmp/gui_rpc_auth.cfg
-        timeout 5m boinc --dir /tmp &
-        sleep $((6*60)) && boinccmd --quit
+        timeout --preserve-status 5m boinc --dir /tmp
+        uptime
