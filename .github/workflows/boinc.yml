@@ -18,4 +18,8 @@ jobs:
         sudo apt-get update
         sudo apt install -y boinc
     - name: Run BOINC
-      run: timeout -s SIGTERM 1h boinc --dir /tmp
+      run: |
+        uptime
+        > /tmp/gui_rpc_auth.cfg
+        timeout 5m boinc --dir /tmp &
+        sleep 120 && boinccmd --quit
