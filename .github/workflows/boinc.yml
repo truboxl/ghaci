@@ -3,11 +3,11 @@ name: boinc
 on:
   pull_request:
 
-permisions: {}
+permissions: {}
 
 jobs:
   compute:
-    permssions:
+    permissions:
       contents: read
     runs-on: ubuntu-latest
     steps:
