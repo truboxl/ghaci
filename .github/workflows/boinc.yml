@@ -1,0 +1,19 @@
+name: boinc
+
+on:
+  pull_request:
+
+permisions: {}
+
+jobs:
+  compute:
+    permssions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Install BOINC
+      run: apt install -y boinc
+    - name: Run BOINC
+      run: timeout -s SIGTERM 1h boinc --dir /tmp
