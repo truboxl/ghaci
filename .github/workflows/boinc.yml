@@ -22,4 +22,4 @@ jobs:
         uptime
         > /tmp/gui_rpc_auth.cfg
         timeout 5m boinc --dir /tmp &
-        sleep 120 && boinccmd --quit
+        sleep $((6*60)) && boinccmd --quit
