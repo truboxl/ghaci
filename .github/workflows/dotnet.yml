@@ -1,0 +1,26 @@
+name: dotnet
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  compute:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Clone dotnet repo
+      run: |
+        git clone https://github.com/dotnet/dotnet
+    - name: Prep
+      run: |
+        pushd ~/dotnet
+        ./prep-source-build.sh
+    - name: Build
+      run: |
+        pushd ~/dotnet
+        ./build.sh
