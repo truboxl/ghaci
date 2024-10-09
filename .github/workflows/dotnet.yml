@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Install dependencies
       run: |
-        sudo apt update && sudo apt install -y libkrb5-dev
+        sudo apt update && sudo apt install -y libkrb5-dev liblttng-ust-dev
     - name: Free additional disk space
       run: |
         sudo apt purge -yq $(dpkg -l | grep '^ii' | awk '{ print $2 }' | grep -P '(aspnetcore|cabal-|dotnet-|ghc-|libmono|mongodb-|mysql-|php)') \
