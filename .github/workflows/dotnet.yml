@@ -34,9 +34,9 @@ jobs:
         [ -f ./prep-source-build.sh ] && ./prep-source-build.sh || ./prep.sh
         git status
     - name: Build
-      env: |
+      env:
         # https://github.com/dotnet/aspire/issues/5956
-        CI=
+        CI:
       run: |
         pwd
         cd dotnet
