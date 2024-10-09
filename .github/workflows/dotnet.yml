@@ -1,0 +1,56 @@
+name: dotnet
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  compute:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        sudo apt update && sudo apt install -y libkrb5-dev liblttng-ust-dev
+    - name: Free additional disk space
+      run: |
+        sudo apt purge -yq $(dpkg -l | grep '^ii' | awk '{ print $2 }' | grep -P '(aspnetcore|cabal-|dotnet-|ghc-|libmono|mongodb-|mysql-|php)') \
+          firefox google-chrome-stable microsoft-edge-stable mono-devel mono-runtime-common monodoc-manual ruby
+        sudo apt autoremove -yq
+        sudo apt clean
+        sudo rm -fr /opt/ghc /opt/hostedtoolcache /usr/lib/node_modules /usr/local/share/boost /usr/share/dotnet /usr/share/swift
+    - name: Clone dotnet repo
+      run: |
+        pwd
+        git clone https://github.com/dotnet/dotnet --depth 1 --branch v8.0.10
+    - name: Prep
+      run: |
+        pwd
+        cd dotnet
+        [ -f ./prep-source-build.sh ] && ./prep-source-build.sh || ./prep.sh
+        git status
+    - name: Build
+      env:
+        # https://github.com/dotnet/aspire/issues/5956
+        CI:
+      run: |
+        pwd
+        cd dotnet
+        ./build.sh
+    - name: git status
+      if: always()
+      run: git status
+    - name: Upload artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-${{ github.sha }}
+        path: |
+          ./dotnet/.dotnet
+          ./dotnet/artifacts
+          ./dotnet/eng/tools/*/*/bin
+          ./dotnet/eng/tools/*/*/obj
