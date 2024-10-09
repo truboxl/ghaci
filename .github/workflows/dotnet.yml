@@ -23,7 +23,7 @@ jobs:
     - name: Clone dotnet repo
       run: |
         pwd
-        git clone https://github.com/dotnet/dotnet --depth 1
+        git clone https://github.com/dotnet/dotnet --depth 1 --branch release/8.0.1xx
     - name: Prep
       run: |
         pwd
@@ -35,10 +35,16 @@ jobs:
         pwd
         cd dotnet
         ./build.sh
-        git status
+    - name: git status
+      if: always()
+      run: git status
     - name: Upload artifacts
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: dotnet-${{ github.sha }}
-        path: ./dotnet
+        path: |
+          ./dotnet/.dotnet
+          ./dotnet/artifacts
+          ./dotnet/eng/tools/*/*/bin
+          ./dotnet/eng/tools/*/*/obj
