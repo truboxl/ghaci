@@ -18,11 +18,11 @@ jobs:
         git clone https://github.com/dotnet/dotnet --depth 1
     - name: Prep
       run: |
-        cd ~/dotnet
+        cd dotnet
+        pwd
         ./prep-source-build.sh
         git status
     - name: Build
       run: |
-        cd ~/dotnet
         ./build.sh
         git status
