@@ -28,7 +28,7 @@ jobs:
       run: |
         pwd
         cd dotnet
-        ./prep-source-build.sh
+        [ -f ./prep-source-build.sh ] && ./prep-source-build.sh || ./prep.sh
         git status
     - name: Build
       run: |
