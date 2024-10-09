@@ -15,12 +15,14 @@ jobs:
       uses: actions/checkout@v4
     - name: Clone dotnet repo
       run: |
-        git clone https://github.com/dotnet/dotnet
+        git clone https://github.com/dotnet/dotnet --depth 1
     - name: Prep
       run: |
-        pushd ~/dotnet
+        cd ~/dotnet
         ./prep-source-build.sh
+        git status
     - name: Build
       run: |
-        pushd ~/dotnet
+        cd ~/dotnet
         ./build.sh
+        git status
